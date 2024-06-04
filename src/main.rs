@@ -2,6 +2,7 @@ use ecies::{decrypt, encrypt};
 use secp256k1::{PublicKey, SecretKey, Secp256k1};
 use hex;
 use std::{env, fs::File, io::{Read, Write}};
+use clap::{Parser, Subcommand};
 
 fn test_functionality(private_key_str: &str) {
     const MSG: &str = "helloworld";
@@ -108,55 +109,61 @@ fn get_public_key(private_key_str: &str) {
     println!("Public Key in Hex: {}", pk_hex);
 }
 
+#[derive(Parser)]
+#[command(name = "MyApp", version = "1.0", about = "Does awesome things with encryption and files", long_about = None)]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+    /// Test the functionality
+    Test,
+    /// Get the public key
+    Pubkey,
+    /// Encrypt a message
+    Encrypt {
+        #[arg(help = "Public key in hex format")]
+        public_key_hex: String,
+        #[arg(help = "Message to encrypt")]
+        message: String,
+    },
+    /// Decrypt a message
+    Decrypt {
+        #[arg(help = "Encrypted message in hex format")]
+        encrypted_hex: String,
+    },
+    /// Encrypt a file
+    EncryptFile {
+        #[arg(help = "Public key in hex format")]
+        public_key_hex: String,
+        #[arg(help = "Input file path")]
+        input_file: String,
+        #[arg(help = "Output file path")]
+        output_file: String,
+    },
+    /// Decrypt a file
+    DecryptFile {
+        #[arg(help = "Input file path")]
+        input_file: String,
+        #[arg(help = "Output file path")]
+        output_file: String,
+    },
+}
+
 fn main() {
 
     let pkey = env::var("PKey").expect("not valid key");
 
-    let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        println!("Usage: --test | --encrypt <public_key_hex> <message> | --decrypt <secret_key_hex> <encrypted_hex>");
-        return;
-    }
+    let cli = Cli::parse();
 
-    match args[1].as_str() {
-        "--test" => test_functionality(&pkey),
-        "--pubkey" => get_public_key(&pkey),
-        "--encrypt" => {
-            if args.len() != 4 {
-                println!("Usage: --encrypt <public_key_hex> <message>");
-            } else {
-		        let pubkey = &args[2];
-                let message = &args[3];
-                encrypt_message(pubkey, message);
-            }
-        },
-        "--decrypt" => {
-            if args.len() != 3 {
-                println!("Usage: --decrypt <encrypted_hex>");
-            } else {
-                let encrypted_hex = &args[2];
-                decrypt_message(&pkey, encrypted_hex);
-            }
-        },
-        "--encrypt-file" => {
-            if args.len() != 5 {
-                println!("Usage: --encrypt-file <public_key_hex> <input_file>");
-            } else {
-                let pubkey = &args[2];
-                let file_path = &args[3];
-		        let out_path = &args[4];
-                encrypt_file(pubkey, file_path, out_path);
-            }
-        },
-        "--decrypt-file" => {
-            if args.len() != 4 {
-                println!("Usage: --decrypt-file <input_file> <output_file>");
-            } else {
-                let file_path = &args[2];
-		        let out_path = &args[3];
-                decrypt_file(&pkey, file_path, out_path);
-            }
-        },
-        _ => println!("Invalid option. Use --test, --encrypt, or --decrypt."),
+    match &cli.command {
+        Commands::Test => test_functionality(),
+        Commands::Pubkey => get_public_key(),
+        Commands::Encrypt { public_key_hex, message } => encrypt_message(public_key_hex, message),
+        Commands::Decrypt { encrypted_hex } => decrypt_message(encrypted_hex),
+        Commands::EncryptFile { public_key_hex, input_file, output_file } => encrypt_file(public_key_hex, input_file, output_file),
+        Commands::DecryptFile { input_file, output_file } => decrypt_file(input_file, output_file),
     }
 }
