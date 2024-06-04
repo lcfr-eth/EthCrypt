@@ -1,4 +1,4 @@
-# ETH-Crypter  
+# EthCrypt  
 
 Use [ECIES](https://medium.com/asecuritysite-when-bob-met-alice/elliptic-curve-integrated-encryption-scheme-ecies-encrypting-using-elliptic-curves-dc8d0b87eaa) to encrypt text and files <= 1G using an ethereum public key. 
 
