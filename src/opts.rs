@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(
-    name = "eth-crypter", 
+    name = "EthCrypt", 
     version = "1.0", 
     about = "Encrypt/Decrypt text & files using ETH keypairs", 
     long_about = None
