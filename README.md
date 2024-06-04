@@ -5,7 +5,27 @@ Use [ECIES](https://medium.com/asecuritysite-when-bob-met-alice/elliptic-curve-i
 Decrypt using corresponding private key.
 
 # Usage
-Requires the Public Key of an ethereum account to encrypt the data with.
+Requires the ```Public Key``` of an Ethereum address to encrypt the data with.
+
+```
+% cargo run
+Encrypt/Decrypt text & files using ETH keypairs
+
+Usage: EthCrypter <COMMAND>
+
+Commands:
+  test          
+  pubkey        
+  encrypt       
+  decrypt       
+  encrypt-file  
+  decrypt-file  
+  help          Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help     Print help
+  -V, --version  Print version
+  ```
 
 Get PublicKey: 
 ```

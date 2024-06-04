@@ -1,5 +1,5 @@
 [package]
-name = "eth-crypter"
+name = "EthCrypter"
 version = "0.1.0"
 edition = "2021"
 
