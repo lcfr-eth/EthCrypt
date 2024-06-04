@@ -1,8 +1,10 @@
+mod opts;
 use ecies::{decrypt, encrypt};
 use secp256k1::{PublicKey, SecretKey, Secp256k1};
 use hex;
 use std::{env, fs::File, io::{Read, Write}};
-use clap::{Parser, Subcommand};
+use opts::{Cli, Commands};
+use clap::Parser;
 
 fn test_functionality(private_key_str: &str) {
     const MSG: &str = "helloworld";
@@ -109,61 +111,15 @@ fn get_public_key(private_key_str: &str) {
     println!("Public Key in Hex: {}", pk_hex);
 }
 
-#[derive(Parser)]
-#[command(name = "MyApp", version = "1.0", about = "Does awesome things with encryption and files", long_about = None)]
-struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
-
-#[derive(Subcommand)]
-enum Commands {
-    /// Test the functionality
-    Test,
-    /// Get the public key
-    Pubkey,
-    /// Encrypt a message
-    Encrypt {
-        #[arg(help = "Public key in hex format")]
-        public_key_hex: String,
-        #[arg(help = "Message to encrypt")]
-        message: String,
-    },
-    /// Decrypt a message
-    Decrypt {
-        #[arg(help = "Encrypted message in hex format")]
-        encrypted_hex: String,
-    },
-    /// Encrypt a file
-    EncryptFile {
-        #[arg(help = "Public key in hex format")]
-        public_key_hex: String,
-        #[arg(help = "Input file path")]
-        input_file: String,
-        #[arg(help = "Output file path")]
-        output_file: String,
-    },
-    /// Decrypt a file
-    DecryptFile {
-        #[arg(help = "Input file path")]
-        input_file: String,
-        #[arg(help = "Output file path")]
-        output_file: String,
-    },
-}
-
 fn main() {
-
     let pkey = env::var("PKey").expect("not valid key");
-
     let cli = Cli::parse();
-
     match &cli.command {
-        Commands::Test => test_functionality(),
-        Commands::Pubkey => get_public_key(),
-        Commands::Encrypt { public_key_hex, message } => encrypt_message(public_key_hex, message),
-        Commands::Decrypt { encrypted_hex } => decrypt_message(encrypted_hex),
-        Commands::EncryptFile { public_key_hex, input_file, output_file } => encrypt_file(public_key_hex, input_file, output_file),
-        Commands::DecryptFile { input_file, output_file } => decrypt_file(input_file, output_file),
+        Commands::Test => test_functionality(&pkey),
+        Commands::Pubkey => get_public_key(&pkey),
+        Commands::Encrypt { public_key_hex, message } => encrypt_message(&public_key_hex, &message),
+        Commands::Decrypt { encrypted_hex } => decrypt_message(&pkey, &encrypted_hex),
+        Commands::EncryptFile { public_key_hex, input_file, output_file } => encrypt_file(&public_key_hex, &input_file, &output_file),
+        Commands::DecryptFile { input_file, output_file } => decrypt_file(&pkey, &input_file, &output_file),
     }
 }
