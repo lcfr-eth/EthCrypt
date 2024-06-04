@@ -49,7 +49,8 @@ Get Public Key for a Private Key:
 Public Key in Hex: 04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a8767a516f3c807a38fc94fad34043c569fcc97ae2944b8c06592a5f84b1b39f611b430140a03af3ca94ab0d738cfc0af6b0bcb44e5ba
 ```
 
-## Encrypt Message
+## Encrypt Message  
+Supply the ```Public Key``` as the first argument to the ```encrypt``` subcommand with the message to encrypt as the last argument.  
 ```
 % cargo run encrypt 04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a helloworld
 
