@@ -5,7 +5,7 @@ Use [ECIES](https://medium.com/asecuritysite-when-bob-met-alice/elliptic-curve-i
 Decrypt using corresponding private key.
 
 ## Usage
-Requires the ```Public Key``` of an Ethereum address to encrypt the data with.
+Requires the ```Private Key``` of an Ethereum address to decrypt data previously encrypted using its public key.
 
 ```% export PKey=0000000000000000000000000000000000000000000000000000000000000002```
 
