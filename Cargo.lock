@@ -3,16 +3,6 @@
 version = 3
 
 [[package]]
-name = "EthCrypter"
-version = "0.1.0"
-dependencies = [
- "clap",
- "ecies",
- "hex",
- "secp256k1",
-]
-
-[[package]]
 name = "anstream"
 version = "0.6.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -224,6 +214,16 @@ dependencies = [
  "rand_core",
  "sha2",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "eth_crypt"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "ecies",
+ "hex",
+ "secp256k1",
 ]
 
 [[package]]
