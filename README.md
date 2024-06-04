@@ -50,7 +50,9 @@ Public Key in Hex: 04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c7
 ```
 
 ## Encrypt Message  
-Supply the ```Public Key``` as the first argument to the ```encrypt``` subcommand with the message to encrypt as the last argument.  
+Supply the ```Public Key``` of the desired recipient as the first argument to the ```encrypt``` subcommand with the message to encrypt as the last argument.  
+
+Below we test encrypting a message using the public key of our own private key.  
 ```
 % cargo run encrypt 04c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee51ae168fea63dc339a3c58419466ceaeef7f632653266d0e1236431a950cfe52a helloworld
 
